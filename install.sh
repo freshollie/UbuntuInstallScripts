@@ -3,44 +3,46 @@ wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-ke
 sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
 
 # Pycharm
-sudo add-apt-repository --yes ppa:mystic-mirage/pycharm
+sudo add-apt-repository -y ppa:mystic-mirage/pycharm
 
 # Notepad QQ
-sudo add-apt-repository --yes ppa:notepadqq-team/notepadqq
+sudo add-apt-repository -y ppa:notepadqq-team/notepadqq
 
 # Touchpad indicator
-sudo add-apt-repository --yes ppa:atareao/atareao 
+sudo add-apt-repository -y ppa:atareao/atareao 
 
 # F.lux
-sudo add-apt-repository --yes ppa:nathan-renniewaldock/flux
+sudo add-apt-repository -y ppa:nathan-renniewaldock/flux
 
 # Qbittorrent 
-sudo add-apt-repository --yes ppa:qbittorrent-team/qbittorrent-stable
+sudo add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
 
 # Codeblocks
-sudo add-apt-repository --yes ppa:damien-moore/codeblocks-stable
+sudo add-apt-repository -y ppa:damien-moore/codeblocks-stable
 
 
 
 
 sudo apt-get update
 
-sudo apt-get --yes --force-yes install google-chrome-stable
+sudo apt-get -y install google-chrome-stable
 
-sudo apt-get --yes --force-yes install pycharm
+sudo apt-get -y install pycharm
 
-sudo apt-get --yes --force-yes install notepadqq
+sudo apt-get -y install notepadqq
 
-sudo apt-get --yes --force-yes install touchpad-indicator
+sudo apt-get -y install touchpad-indicator
 
-sudo apt-get --yes --force-yes install fluxgui
+sudo apt-get -y install fluxgui
 
-sudo apt-get --yes --force-yes install qbittorrent
+sudo apt-get -y install qbittorrent
 
-sudo apt-get --yes --force-yes install vlc
+sudo apt-get -y install vlc
 
-sudo apt-get --yes --force-yes install codeblocks
+sudo apt-get -y install codeblocks
 
 setxkbmap gb
 
 sudo nano /etc/lightdm/lightdm.conf
+
+#ricohkeyboardwallet
