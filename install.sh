@@ -40,3 +40,7 @@ sudo apt-get --yes --force-yes install qbittorrent
 sudo apt-get --yes --force-yes install vlc
 
 sudo apt-get --yes --force-yes install codeblocks
+
+setxkbmap gb
+
+sudo nano /etc/lightdm/lightdm.conf
