@@ -43,6 +43,6 @@ sudo apt-get -y install codeblocks
 
 setxkbmap gb
 
-sudo nano /etc/lightdm/lightdm.conf
+passwd
 
 #ricohkeyboardwallet
