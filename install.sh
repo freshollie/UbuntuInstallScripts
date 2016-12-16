@@ -1,3 +1,9 @@
+# Script to install some applications on trustylxde 
+
+
+sudo apt-get -y install software-properties-common python-software-properties
+
+
 # Chrome
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
@@ -20,6 +26,9 @@ sudo add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
 # Codeblocks
 sudo add-apt-repository -y ppa:damien-moore/codeblocks-stable
 
+# Android adb and fastboot
+sudo add-apt-repository -y ppa:nilarimogard/webupd8
+
 
 
 
@@ -41,8 +50,11 @@ sudo apt-get -y install vlc
 
 sudo apt-get -y install codeblocks
 
-setxkbmap gb
+sudo apt-get -y install nano
 
-passwd
+sudo apt-get -y install g++
 
-#ricohkeyboardwallet
+sudo apt-get -y install android-tools-adb android-tools-fastboot
+
+
+echo "@setxkbmap gb">>~/.config/lxsession/LXDE/autostart
