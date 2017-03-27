@@ -29,6 +29,11 @@ sudo add-apt-repository -y ppa:damien-moore/codeblocks-stable
 # Android adb and fastboot
 sudo add-apt-repository -y ppa:nilarimogard/webupd8
 
+# Java
+sudo add-apt-repository ppa:openjdk-r/ppa
+
+# Android studio
+sudo add-apt-repository ppa:ubuntu-desktop/ubuntu-make
 
 
 
@@ -56,5 +61,9 @@ sudo apt-get -y install g++
 
 sudo apt-get -y install android-tools-adb android-tools-fastboot
 
+sudo apt-get -y install oracle-java8-installer
+sudo apt-get -y install lib32stdc++6
+sudo apt-get -y install ubuntu-make
+sudo umake android android-studio
 
 echo "@setxkbmap gb">>~/.config/lxsession/LXDE/autostart
