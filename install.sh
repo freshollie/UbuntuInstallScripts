@@ -22,7 +22,7 @@ sudo add-apt-repository -y ppa:notepadqq-team/notepadqq
 
 if [ $DESKTOP == false ]; then
 	# Touchpad indicator
-	sudo add-apt-repository -y ppa:atareao/atareao 
+    sudo add-apt-repository -y ppa:atareao/atareao 
 fi
 
 # F.lux
@@ -43,9 +43,13 @@ sudo add-apt-repository ppa:openjdk-r/ppa
 # Android studio
 sudo add-apt-repository ppa:ubuntu-desktop/ubuntu-make
 
+# Spotify
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
+echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
 
 
 sudo apt-get update
+
 
 sudo apt-get -y install google-chrome-stable
 
@@ -55,7 +59,7 @@ sudo apt-get -y install notepadqq
 
 # Laptop needs touchpad
 if [DESKTOP == false]; then
-	sudo apt-get -y install touchpad-indicator
+   sudo apt-get -y install touchpad-indicator
 fi
 
 sudo apt-get -y install fluxgui
@@ -70,18 +74,24 @@ sudo apt-get -y install nano
 
 sudo apt-get -y install g++
 
+sudo apt-get install spotify-client
+
 sudo apt-get -y install android-tools-adb android-tools-fastboot
 
 sudo apt-get -y install oracle-java8-installer
 
 # Desktop needs these set for AVD
 if [ $DESKTOP == true ]; then
-	sudo apt-get -y install lib32stdc++6 lib32z1
-	sudo apt-get -y install libgl1-mesa-dev
-	sudo echo "export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1">>$HOME/.profile
+    sudo apt-get -y install lib32stdc++6 lib32z1
+    sudo apt-get -y install libgl1-mesa-dev
+    sudo echo "export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1">>$HOME/.profile
 fi 
 
 sudo apt-get -y install ubuntu-make
 sudo umake android android-studio
 
-echo "@setxkbmap gb">>~/.config/lxsession/LXDE/autostart
+# Desktop needs these set for AVD
+if [ $DESKTOP == false ]; then
+    echo "@setxkbmap gb">>~/.config/lxsession/LXDE/autostart
+fi
+    
