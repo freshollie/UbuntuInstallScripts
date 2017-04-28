@@ -94,4 +94,6 @@ sudo umake android android-studio
 if [ $DESKTOP == false ]; then
     echo "@setxkbmap gb">>~/.config/lxsession/LXDE/autostart
 fi
+
+sudo echo 'export PATH=$PATH:$HOME"/Android/Sdk/platform-tools"' >> $HOME/.profile
     
