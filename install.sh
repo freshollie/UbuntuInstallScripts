@@ -3,9 +3,7 @@
 DESKTOP=false
 read -n1 -p "Desktop?(y, n): " doit 
 echo""
-case $doit in  
-  y|Y) DESKTOP=true;; 
-  *);; 
+case $doit in y|Y) DESKTOP=true;; *);; 
 esac
 
 sudo apt-get -y install software-properties-common python-software-properties
@@ -43,9 +41,13 @@ sudo add-apt-repository ppa:openjdk-r/ppa
 # Android studio
 sudo add-apt-repository ppa:ubuntu-desktop/ubuntu-make
 
-# Spotify
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
-echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
+
+if [DESKTOP == true]; then
+    # Spotify
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
+    echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
+    
+fi
 
 
 sudo apt-get update
@@ -74,7 +76,15 @@ sudo apt-get -y install nano
 
 sudo apt-get -y install g++
 
-sudo apt-get install spotify-client
+if [DESKTOP == true]; then
+    sudo apt-get -y install spotify-client
+    
+    # TL-WN823N wireless driver
+    sudo apt-get -y install git linux-headers-generic build-essential dkms
+    git clone https://github.com/Mange/rtl8192eu-linux-driver.git
+    sudo dkms install ./rtl8192eu-linux-driver
+    
+fi
 
 sudo apt-get -y install android-tools-adb android-tools-fastboot
 
@@ -95,5 +105,5 @@ if [ $DESKTOP == false ]; then
     echo "@setxkbmap gb">>~/.config/lxsession/LXDE/autostart
 fi
 
-sudo echo 'export PATH=$PATH:$HOME"/Android/Sdk/platform-tools"' >> $HOME/.profile
+sudo echo 'export PATH=$PATH:$HOME"/Android/sdk/platform-tools"' >> $HOME/.profile
     
