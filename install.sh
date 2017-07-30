@@ -19,7 +19,7 @@ sudo add-apt-repository -y ppa:mystic-mirage/pycharm
 sudo add-apt-repository -y ppa:notepadqq-team/notepadqq
 
 if [ $DESKTOP == false ]; then
-	# Touchpad indicator
+    # Touchpad indicator
     sudo add-apt-repository -y ppa:atareao/atareao 
 fi
 
@@ -61,7 +61,7 @@ sudo apt-get -y install notepadqq
 
 # Laptop needs touchpad
 if [DESKTOP == false]; then
-   sudo apt-get -y install touchpad-indicator
+    sudo apt-get -y install touchpad-indicator
 fi
 
 sudo apt-get -y install fluxgui
@@ -79,11 +79,22 @@ sudo apt-get -y install g++
 if [DESKTOP == true]; then
     sudo apt-get -y install spotify-client
     
+fi
+
+WIRELESS_DRIVER=false
+read -n1 -p "Wireless fix?(y, n): " doit 
+echo""
+case $doit in y|Y) WIRELESS_DRIVER=true;; *);; 
+esac
+
+if [WIRELESS_DRIVER == true]; then
     # TL-WN823N wireless driver
     sudo apt-get -y install git linux-headers-generic build-essential dkms
     git clone https://github.com/Mange/rtl8192eu-linux-driver.git
-    sudo dkms install ./rtl8192eu-linux-driver
-    
+	sudo dkms install ./rtl8192eu-linux-driver
+    git clone https://github.com/pvaret/rtl8192cu-fixes.git
+    sudo modprobe -r rtl8xxxu
+    sudo cp ./rtl8192cu-fixes/blacklist-native-rtl8192.conf /etc/modprobe.d/
 fi
 
 sudo apt-get -y install android-tools-adb android-tools-fastboot
@@ -106,4 +117,5 @@ if [ $DESKTOP == false ]; then
 fi
 
 sudo echo 'export PATH=$PATH:$HOME"/Android/sdk/platform-tools"' >> $HOME/.profile
+sudo reboot
     
