@@ -6,6 +6,8 @@ DESKTOP=false
 #case $doit in y|Y) DESKTOP=true;; *);; 
 #esac
 
+gsettings set com.canonical.Unity.Launcher launcher-position Bottom
+
 sudo apt-get -y install software-properties-common python-software-properties
 
 # Chrome

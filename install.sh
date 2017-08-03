@@ -103,6 +103,7 @@ sudo apt-get -y install oracle-java8-installer
 
 # Desktop needs these set for AVD
 if [ $DESKTOP == true ]; then
+    gsettings set com.canonical.Unity.Launcher launcher-position Bottom
     sudo apt-get -y install lib32stdc++6 lib32z1
     sudo apt-get -y install libgl1-mesa-dev
     sudo echo "export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1">>$HOME/.profile
