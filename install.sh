@@ -76,6 +76,10 @@ sudo apt-get -y install nano
 
 sudo apt-get -y install g++
 
+sudo apt-get -y install variety
+
+sudo apt-get -y remove --purge firefox
+
 if [DESKTOP == true]; then
     sudo apt-get -y install spotify-client
     
@@ -116,6 +120,11 @@ sudo umake android android-studio
 if [ $DESKTOP == false ]; then
     echo "@setxkbmap gb">>~/.config/lxsession/LXDE/autostart
 fi
+
+sudo apt-get -y remove --purge firefox
+sudo apt-get -y remove --purge libreoffice*
+sudo apt-get clean
+sudo apt-get autoremove
 
 sudo echo 'export PATH=$PATH:$HOME"/Android/sdk/platform-tools"' >> $HOME/.profile
 sudo reboot
