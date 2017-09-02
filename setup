@@ -1,0 +1,203 @@
+#!/bin/bash
+
+# Script to setup my ubuntu operting system settings after a new install
+
+function print_usage() {
+    echo "usage: sudo ./setup (desktop || laptop) [work] [wirelessfix]"
+}
+
+# Must be run as root
+if [ "$(id -u)" -ne 0 ]; then 
+    echo "Please run as root"
+    print_usage
+    exit 1
+fi
+
+DESKTOP=false
+WORK=false
+WIRELESSFIX=false
+
+# Read the options
+case $1 in
+    "desktop")
+        echo "Setting up as a desktop"
+        DESKTOP=true
+        ;;
+    "laptop")
+        echo "Setting up as a laptop"
+        DESKTOP=false        
+        ;;
+    *)
+        print_usage
+        exit 1
+        ;;
+esac
+
+if [ "$2" == "work" ]; then
+    echo "For work";
+    WORK=true
+fi
+
+if [ "$2" == "wirelessfix" -o "$3" == "wirelessfix" ]; then
+    echo "And installing a wireless driver fix"
+    WIRELESSFIX=true
+fi
+
+echo ----------------------------------------------------------------
+echo "Starting install in 10 seconds, will reboot after setup. Could take half an hour"
+sleep 10s
+
+# Gather PPAs
+#############
+
+apt-get -y install software-properties-common python-software-properties
+
+# Chrome
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+
+# Pycharm
+add-apt-repository -y ppa:mystic-mirage/pycharm
+
+# Notepad QQ
+add-apt-repository -y ppa:notepadqq-team/notepadqq
+
+if [ $DESKTOP == false ]; then
+    # Touchpad indicator
+    add-apt-repository -y ppa:atareao/atareao 
+fi
+
+# F.lux
+add-apt-repository -y ppa:nathan-renniewaldock/flux
+
+if [ $WORK == false ]; then
+    # Qbittorrent 
+    add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
+fi
+
+# Codeblocks
+add-apt-repository -y ppa:damien-moore/codeblocks-stable
+
+# Java
+add-apt-repository -y ppa:openjdk-r/ppa
+
+# Android studio and visual-code
+add-apt-repository -y ppa:ubuntu-desktop/ubuntu-make
+
+# Don't install spotify on a laptop
+if [ $DESKTOP == true ]; then
+    # Spotify
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
+    echo deb http://repository.spotify.com stable non-free | tee /etc/apt/sources.list.d/spotify.list
+fi
+
+apt-get update
+
+
+# Install packages
+##################
+
+apt-get -y install google-chrome-stable
+
+apt-get -y install pycharm
+
+apt-get -y install notepadqq
+
+# Laptop needs touchpad
+if [ $DESKTOP == false ]; then
+    apt-get -y install touchpad-indicator
+fi
+
+apt-get -y install fluxgui
+
+if [ $WORK == false ]; then
+    apt-get -y install qbittorrent
+fi
+
+apt-get -y install vlc
+
+apt-get -y install codeblocks
+
+apt-get -y install nano
+
+apt-get -y install g++
+
+# Wallpaper slideshow
+apt-get -y install variety
+
+apt-get install curl
+
+# install nodejs
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
+apt-get install -y nodejs
+
+apt-get -y install npm
+
+if [ $DESKTOP == true ]; then
+    apt-get -y install spotify-client
+fi
+
+if [ $WIRELESSFIX == true ]; then
+    # TL-WN823N wireless driver
+    apt-get -y linux-headers-generic build-essential dkms
+    git clone https://github.com/Mange/rtl8192eu-linux-driver.git
+	dkms install ./rtl8192eu-linux-driver
+    git clone https://github.com/pvaret/rtl8192cu-fixes.git
+    modprobe -r rtl8xxxu
+    cp ./rtl8192cu-fixes/blacklist-native-rtl8192.conf /etc/modprobe.d/
+fi
+
+# Install java 8
+apt-get -y install oracle-java8-installer
+
+if [ $DESKTOP == true ]; then
+    #Set the bar to bottom
+    gsettings set com.canonical.Unity.Launcher launcher-position Bottom
+    
+    # Desktop needs these set for AVD
+    apt-get -y install lib32stdc++6 lib32z1
+    apt-get -y install libgl1-mesa-dev
+    echo "export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1">>$HOME/.profile
+fi 
+
+apt-get -y install ubuntu-make
+
+umake android android-studio
+
+umake ide visual-studio-code
+
+# Fix some settings
+###################
+
+# If we are on the laptop, make sure that it has a british keyboard on crouton launch
+if [ $DESKTOP == false ]; then
+    echo "@setxkbmap gb">>~/.config/lxsession/LXDE/autostart
+fi
+
+# Add platform tools to my path
+echo 'export PATH=$PATH:$HOME"/Android/sdk/platform-tools"' >> $HOME/.profile
+
+if [ $DESKTOP == true ]; then
+    # Linux log on boot instead of splash screen
+    if [ $WORK == false ]; then
+        sed -i 's/.*GRUB_CMDLINE_LINUX_DEFAULT.*/GRUB_CMDLINE_LINUX_DEFAULT=""/' /etc/default/grub
+        update-grub
+    fi
+    
+    # Update screenshot preferences
+    gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot '<Primary>Print'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot-clip 'Print'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot '<Primary><Shift>Print'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip '<Shift>Print'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot '<Primary><Alt>Print'
+    gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot '<Alt>Print'
+fi
+
+# Remove bloat
+##############
+apt-get -y remove --purge firefox
+apt-get -y remove --purge libreoffice*
+apt-get clean
+apt-get autoremove
+
+reboot
