@@ -21,7 +21,7 @@ Done. For your future self this has taken too many late nights to work out this 
 
 ## Setup
 
-bash```
+```bash
 sudo apt-get install git
 git clone http://github.com/freshollie/UbuntuInstallScripts.git
 cd UbuntuInstallScripts
