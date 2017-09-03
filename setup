@@ -204,6 +204,11 @@ if [ $DESKTOP == true ]; then
     sudo -u $SUDO_USER gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot-clip '<Alt>Print'
 fi
 
+if [ $WORK == false ]; then
+    git config --global user.email "freshollie@gmail.com"
+    git config --global user.name "Oliver Bell"
+fi
+
 # Remove bloat
 ##############
 apt-get -y remove --purge firefox
