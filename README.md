@@ -21,7 +21,13 @@ Done. For your future self this has taken too many late nights to work out this 
 
 ## Setup
 
-Usage: sudo ./setup (desktop || laptop) [work] [wirelessfix]
+`sudo apt-get install git`
+`git clone http://github.com/freshollie/UbuntuInstallScripts.git`
+`cd UbuntuInstallScripts`
+
+Usage: `sudo ./setup (desktop || laptop) [work] [wirelessfix]`
+
+E.g. `sudo ./setup desktop wirelessfix`
 
 ### Desktop
 
@@ -35,3 +41,29 @@ Doesn't install unneeded programs, mainly spotify
 
 Doesn't install qbittorrent
 
+## Details
+
+### Installs
+
+- Android Studio
+- Visual Code
+- Spotify
+- Google chrome
+- PyCharm
+- NotepadQQ
+- QbitTorrent
+- VLC
+- nano
+- CodeBlocks
+- g++
+- Java
+- curl
+- Variety
+
+### Sets up
+
+- Ubuntu task bar position
+- Screenshot keybindsings
+- Wireless driver fix for my wireless usb
+- Android tools to PATH
+- Android emulator fixes for x64 ubuntu
