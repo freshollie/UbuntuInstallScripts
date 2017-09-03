@@ -21,9 +21,11 @@ Done. For your future self this has taken too many late nights to work out this 
 
 ## Setup
 
-`sudo apt-get install git`
-`git clone http://github.com/freshollie/UbuntuInstallScripts.git`
-`cd UbuntuInstallScripts`
+bash```
+sudo apt-get install git
+git clone http://github.com/freshollie/UbuntuInstallScripts.git
+cd UbuntuInstallScripts
+```
 
 Usage: `sudo ./setup (desktop || laptop) [work] [wirelessfix]`
 
