@@ -205,8 +205,8 @@ if [ $DESKTOP == true ]; then
 fi
 
 if [ $WORK == false ]; then
-    git config --global user.email "freshollie@gmail.com"
-    git config --global user.name "Oliver Bell"
+    sudo -u $SUDO_USER git config --global user.email "freshollie@gmail.com"
+    sudo -u $SUDO_USER git config --global user.name "Oliver Bell"
 fi
 
 # Remove bloat
