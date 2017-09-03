@@ -167,6 +167,8 @@ if [ $DESKTOP == true ]; then
     # Set as light theme
     sudo -u $SUDO_USER gsettings set org.gnome.desktop.interface gtk-theme 'Radiance'
     
+    sudo -u $SUDO_USER gsettings set org.gnome.desktop.peripherals.mouse speed 1.0
+    
     # Desktop needs these set for AVD
     apt-get -y install lib32stdc++6 lib32z1
     apt-get -y install libgl1-mesa-dev
@@ -207,6 +209,7 @@ fi
 if [ $WORK == false ]; then
     sudo -u $SUDO_USER git config --global user.email "freshollie@gmail.com"
     sudo -u $SUDO_USER git config --global user.name "Oliver Bell"
+    sudo -u $SUDO_USER git config --global push.default simple
 fi
 
 # Remove bloat
