@@ -47,6 +47,8 @@ echo ----------------------------------------------------------------
 echo "Starting install in 10 seconds, will reboot after setup. Could take half an hour"
 sleep 10s
 
+cd ~ 
+
 # Gather PPAs
 #############
 
@@ -139,11 +141,19 @@ fi
 
 if [ $WIRELESSFIX == true ]; then
     # TL-WN823N wireless driver
-    apt-get -y linux-headers-generic build-essential dkms
+    apt-get -y install linux-headers-generic build-essential dkms
+    
     git clone https://github.com/Mange/rtl8192eu-linux-driver.git
-	dkms install ./rtl8192eu-linux-driver
+
+    # Build and install a new driver
+    dkms install ./rtl8192eu-linux-driver
+    
     git clone https://github.com/pvaret/rtl8192cu-fixes.git
+    
+    # Stop the old driver
     modprobe -r rtl8xxxu
+    
+    # Stop the old driver forever
     cp ./rtl8192cu-fixes/blacklist-native-rtl8192.conf /etc/modprobe.d/
 fi
 
@@ -152,7 +162,10 @@ apt-get -y install oracle-java8-installer
 
 if [ $DESKTOP == true ]; then
     #Set the bar to bottom
-    gsettings set com.canonical.Unity.Launcher launcher-position Bottom
+    sudo -u $SUDO_USER gsettings set com.canonical.Unity.Launcher launcher-position Bottom
+    
+    # Set as light theme
+    sudo -u $SUDO_USER gsettings set org.gnome.desktop.interface gtk-theme 'Radiance'
     
     # Desktop needs these set for AVD
     apt-get -y install lib32stdc++6 lib32z1
@@ -179,18 +192,16 @@ echo 'export PATH=$PATH:$HOME"/Android/sdk/platform-tools"' >> $HOME/.profile
 
 if [ $DESKTOP == true ]; then
     # Linux log on boot instead of splash screen
-    if [ $WORK == false ]; then
-        sed -i 's/.*GRUB_CMDLINE_LINUX_DEFAULT.*/GRUB_CMDLINE_LINUX_DEFAULT=""/' /etc/default/grub
-        update-grub
-    fi
+    sed -i 's/.*GRUB_CMDLINE_LINUX_DEFAULT.*/GRUB_CMDLINE_LINUX_DEFAULT=""/' /etc/default/grub
+    update-grub
     
     # Update screenshot preferences
-    gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot '<Primary>Print'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot-clip 'Print'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot '<Primary><Shift>Print'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip '<Shift>Print'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot '<Primary><Alt>Print'
-    gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot '<Alt>Print'
+    sudo -u $SUDO_USER gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot '<Primary>Print'
+    sudo -u $SUDO_USER gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot-clip 'Print'
+    sudo -u $SUDO_USER gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot '<Primary><Shift>Print'
+    sudo -u $SUDO_USER gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip '<Shift>Print'
+    sudo -u $SUDO_USER gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot '<Primary><Alt>Print'
+    sudo -u $SUDO_USER gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot-clip '<Alt>Print'
 fi
 
 # Remove bloat
