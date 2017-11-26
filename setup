@@ -105,6 +105,8 @@ apt-get -y install pycharm
 
 apt-get -y install notepadqq
 
+apt-get -y install android-tools-fastboot
+
 # Laptop needs touchpad
 if [ $DESKTOP == false ]; then
     apt-get -y install touchpad-indicator
@@ -127,7 +129,7 @@ apt-get -y install g++
 # Wallpaper slideshow
 apt-get -y install variety
 
-apt-get install curl
+apt-get -y install curl
 
 # install nodejs
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
@@ -167,6 +169,8 @@ if [ $DESKTOP == true ]; then
     # Set as light theme
     sudo -u $SUDO_USER gsettings set org.gnome.desktop.interface gtk-theme 'Radiance'
     
+    sudo -u $SUDO_USER gsettings set com.canonical.Unity always-show-menus true
+    
     sudo -u $SUDO_USER gsettings set org.gnome.desktop.peripherals.mouse speed 1.0
     
     # Desktop needs these set for AVD
@@ -179,7 +183,7 @@ apt-get -y install ubuntu-make
 
 umake android android-studio
 
-umake ide visual-studio-code
+umake ide visual-studio-code --accept-license
 
 # Fix some settings
 ###################
@@ -190,7 +194,7 @@ if [ $DESKTOP == false ]; then
 fi
 
 # Add platform tools to my path
-echo 'export PATH=$PATH:$HOME"/Android/sdk/platform-tools"' >> $HOME/.profile
+echo 'export PATH=$PATH:"$HOME/Android/Sdk/platform-tools"' >> $HOME/.profile
 
 if [ $DESKTOP == true ]; then
     # Linux log on boot instead of splash screen
