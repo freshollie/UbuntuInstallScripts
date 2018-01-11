@@ -58,7 +58,7 @@ apt-get -y install software-properties-common python-software-properties
 
 # Chrome
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
 
 # Pycharm
 add-apt-repository -y ppa:mystic-mirage/pycharm
@@ -88,11 +88,16 @@ add-apt-repository -y ppa:openjdk-r/ppa
 # Android studio and visual-code
 add-apt-repository -y ppa:ubuntu-desktop/ubuntu-make
 
-# Don't install spotify on a laptop
-if [ $DESKTOP == true ]; then
+# Don't install spotify or vscode on a laptop
+if [DESKTOP == true]; then
+    # VsCode
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+    mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+    sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+
     # Spotify
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
-    echo deb http://repository.spotify.com stable non-free | tee /etc/apt/sources.list.d/spotify.list
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
+    echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
 fi
 
 apt-get update
@@ -132,6 +137,8 @@ apt-get -y install g++
 apt-get -y install variety
 
 apt-get -y install curl
+
+apt-get -y install code
 
 # install nodejs
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
@@ -206,7 +213,6 @@ fi
 apt-get -y install ubuntu-make
 
 umake android ~/.local/share/umake/android/android-studio --accept-license
-umake ide visual-studio-code ~/.local/share/umake/visual-studio-code --accept-license
 
 if [ $DESKTOP == true ]; then
     # Desktop needs these set for AVD

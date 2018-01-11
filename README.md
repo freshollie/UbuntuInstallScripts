@@ -69,3 +69,16 @@ Doesn't install qbittorrent
 - Wireless driver fix for my wireless usb
 - Android tools to PATH
 - Android emulator fixes for x64 ubuntu
+
+### Head Hacker settings
+
+```
+User-Agent
+
+replace with
+
+Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.1b3) Gecko/20090305 Firefox/3.1b3 GTB5
+
+postfach.me
+```
+
