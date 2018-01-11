@@ -221,11 +221,9 @@ if [ $DESKTOP == true ]; then
     echo "export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1">>$HOME/.profile
 fi 
 
-if [ $WORK == false ]; then
-    su $SUDO_USER -c "git config --global user.email \"freshollie@gmail.com\""
-    su $SUDO_USER -c "git config --global user.name \"Oliver Bell\""
-    su $SUDO_USER -c "git config --global push.default simple"
-fi
+su $SUDO_USER -c "git config --global user.email \"freshollie@gmail.com\""
+su $SUDO_USER -c "git config --global user.name \"Oliver Bell\""
+su $SUDO_USER -c "git config --global push.default simple"
 
 # Remove bloat
 ##############
