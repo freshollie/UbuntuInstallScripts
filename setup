@@ -58,7 +58,7 @@ apt-get -y install software-properties-common python-software-properties
 
 # Chrome
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
 
 # Pycharm
 add-apt-repository -y ppa:mystic-mirage/pycharm
@@ -89,7 +89,7 @@ add-apt-repository -y ppa:openjdk-r/ppa
 add-apt-repository -y ppa:ubuntu-desktop/ubuntu-make
 
 # Don't install spotify or vscode on a laptop
-if [DESKTOP == true]; then
+if [ $DESKTOP == true ]; then
     # VsCode
     curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
     mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
@@ -138,8 +138,6 @@ apt-get -y install variety
 
 apt-get -y install curl
 
-apt-get -y install code
-
 # install nodejs
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
 apt-get install -y nodejs
@@ -148,6 +146,7 @@ apt-get -y install npm
 
 if [ $DESKTOP == true ]; then
     apt-get -y --allow-unauthenticated install spotify-client 
+	apt-get -y install code
 fi
 
 if [ $WIRELESSFIX == true ]; then
@@ -191,7 +190,7 @@ if [ $DESKTOP == true ]; then
     su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot '<Primary><Alt>Print'"
     su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot-clip '<Alt>Print'"
     
-    su $SUDO_USER -c "gettings set com.canonical.Unity.Launcher favorites \"$LAUNCHER_PROGRAMS\""
+    su $SUDO_USER -c "gsettings set com.canonical.Unity.Launcher favorites \"$LAUNCHER_PROGRAMS\""
     
     #Set the bar to bottom
     su $SUDO_USER -c "gsettings set com.canonical.Unity.Launcher launcher-position Bottom"
@@ -223,9 +222,9 @@ if [ $DESKTOP == true ]; then
 fi 
 
 if [ $WORK == false ]; then
-    sudo -u $SUDO_USER git config --global user.email "freshollie@gmail.com"
-    sudo -u $SUDO_USER git config --global user.name "Oliver Bell"
-    sudo -u $SUDO_USER git config --global push.default simple
+    su $SUDO_USER -c "git config --global user.email \"freshollie@gmail.com\""
+    su $SUDO_USER -c "git config --global user.name \"Oliver Bell\""
+    su $SUDO_USER -c "git config --global push.default simple"
 fi
 
 # Remove bloat
@@ -233,7 +232,7 @@ fi
 apt-get -y remove --purge firefox
 apt-get -y remove --purge libreoffice*
 # remove the amazon icon
-echo 'Hidden=true' | cat /usr/share/applications/ubuntu-amazon-default.desktop - > ~/.local/share/applications/ubuntu-amazon-default.desktop
+echo 'Hidden=true' | cat /usr/share/applications/ubuntu-amazon-default.desktop - > $HOME/.local/share/applications/ubuntu-amazon-default.desktop
 apt-get -y clean
 apt-get -y autoremove
 
