@@ -60,9 +60,6 @@ apt-get -y install software-properties-common python-software-properties
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
 
-# Pycharm
-add-apt-repository -y ppa:mystic-mirage/pycharm
-
 # Notepad QQ
 add-apt-repository -y ppa:notepadqq-team/notepadqq
 
@@ -78,9 +75,6 @@ if [ $WORK == false ]; then
     # Qbittorrent 
     add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
 fi
-
-# Codeblocks
-add-apt-repository -y ppa:damien-moore/codeblocks-stable
 
 # Java
 add-apt-repository -y ppa:openjdk-r/ppa
@@ -108,9 +102,9 @@ apt-get update
 
 apt-get -y install google-chrome-stable
 
-apt-get -y install pycharm
-
 apt-get -y install notepadqq
+
+apt-get -y install code
 
 apt-get -y install android-tools-fastboot
 
@@ -127,14 +121,14 @@ fi
 
 apt-get -y install vlc
 
-apt-get -y install codeblocks
-
 apt-get -y install nano
 
 apt-get -y install g++
 
-# Wallpaper slideshow
-apt-get -y install variety
+if [ $DESKTOP == true ]; then 
+    # Wallpaper slideshow
+    apt-get -y install variety
+fi
 
 apt-get -y install curl
 
