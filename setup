@@ -82,13 +82,13 @@ add-apt-repository -y ppa:openjdk-r/ppa
 # Android studio and visual-code
 add-apt-repository -y ppa:ubuntu-desktop/ubuntu-make
 
+# VsCode
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+
 # Don't install spotify or vscode on a laptop
 if [ $DESKTOP == true ]; then
-    # VsCode
-    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-    mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-    sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-
     # Spotify
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
     echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
@@ -135,8 +135,6 @@ apt-get -y install curl
 # install nodejs
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
 apt-get install -y nodejs
-
-apt-get -y install npm
 
 if [ $DESKTOP == true ]; then
     apt-get -y --allow-unauthenticated install spotify-client 
