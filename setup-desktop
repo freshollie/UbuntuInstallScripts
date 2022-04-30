@@ -1,0 +1,42 @@
+#! /bin/bash
+
+LAUNCHER_PROGRAMS="['application://org.gnome.Nautilus.desktop', 'application://notepadqq.desktop', 'unity://running-apps', 'application://google-chrome.desktop', 'unity://expo-icon', 'unity://devices']"
+
+DESKTOP=true
+
+if [ "$DESKTOP" == "true" ]; then
+    echo $SUDO_USER
+    # Update screenshot preferences
+    su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot '<Primary>Print'"
+    su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot-clip 'Print'"
+    su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot '<Primary><Shift>Print'"
+    su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip '<Shift>Print'"
+    su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot '<Primary><Alt>Print'"
+    su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot-clip '<Alt>Print'"
+    
+    su $SUDO_USER -c "gsettings set com.canonical.Unity.Launcher favorites \"$LAUNCHER_PROGRAMS\""
+    
+    #Set the bar to bottom
+    su $SUDO_USER -c "gsettings set com.canonical.Unity.Launcher launcher-position Bottom"
+    
+    # Set as light theme
+    su $SUDO_USER -c "gsettings set org.gnome.desktop.interface gtk-theme 'Radiance'"
+    su $SUDO_USER -c "gsettings set org.gnome.desktop.interface icon-theme 'ubuntu-mono-light'"
+    su $SUDO_USER -c "gsettings set org.gnome.desktop.wm.preferences theme 'Radiance'"
+    
+    su $SUDO_USER -c "gsettings set com.canonical.Unity always-show-menus true"
+    
+    su $SUDO_USER -c "gsettings set org.gnome.desktop.peripherals.mouse speed 1.0"
+    
+    # Linux log on boot instead of splash screen
+    sed -i 's/.*GRUB_CMDLINE_LINUX_DEFAULT.*/GRUB_CMDLINE_LINUX_DEFAULT=""/' /etc/default/grub
+    # update-grub
+fi
+
+if [ "$DESKTOP" == "true" ]; then
+    # Desktop needs these set for AVD
+    apt-get -y install lib32stdc++6 lib32z1
+    apt-get -y install libgl1-mesa-dev
+    # This fixes the emulator for some reason
+    echo "export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1">>$HOME/.profile
+fi 
