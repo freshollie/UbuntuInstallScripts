@@ -54,45 +54,18 @@ cd ~
 # Gather PPAs
 #############
 
-apt-get -y install software-properties-common python-software-properties curl
-
-# Chrome
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-
-# Notepad QQ
-add-apt-repository -y ppa:notepadqq-team/notepadqq
+apt-get -y install software-properties-common curl
+add-apt-repository ppa:lyzardking/ubuntu-make
 
 if [ "$DESKTOP" == "false" ]; then
     # Touchpad indicator
     add-apt-repository -y ppa:atareao/atareao 
 fi
 
-# F.lux
-add-apt-repository -y ppa:nathan-renniewaldock/flux
-
-if [ "$WORK" == "false" ]; then
-    # Qbittorrent 
-    add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
-fi
-
-# Java
-add-apt-repository -y ppa:openjdk-r/ppa
-
-# Android studio and visual-code
-add-apt-repository -y ppa:ubuntu-desktop/ubuntu-make
-
 # VsCode
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
 sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-
-# Don't install spotify or vscode on a laptop
-if [ "$DESKTOP" == "true" ]; then
-    # Spotify
-    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
-    echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
-fi
 
 apt-get update
 
@@ -100,67 +73,27 @@ apt-get update
 # Install packages
 ##################
 
-apt-get -y install apt-transport-https
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+dpkg -i ./google-chrome*.deb
+apt-get install -f
+rm ./google-chrome*.deb
 
-apt-get -y install google-chrome-stable
-
-apt-get -y install notepadqq
-
-apt-get -y install code
-
-apt-get -y install android-tools-fastboot
+apt-get -y install \
+    apt-transport-https \
+    notepadqq \
+    code \
+    android-tools-fastboot \
+    vlc \
+    g++ \
 
 # Laptop needs touchpad
 if [ "$DESKTOP" == "false" ]; then
     apt-get -y install touchpad-indicator
 fi
 
-apt-get -y install fluxgui
-
 if [ "$WORK" == "false" ]; then
     apt-get -y install qbittorrent
 fi
-
-apt-get -y install vlc
-
-apt-get -y install nano
-
-apt-get -y install g++
-
-if [ "$DESKTOP" == "true" ]; then 
-    # Wallpaper slideshow
-    apt-get -y install variety
-fi
-
-# install nodejs
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
-apt-get install -y nodejs
-
-if [ "$DESKTOP" == "true" ]; then
-    apt-get -y --allow-unauthenticated install spotify-client 
-	apt-get -y install code
-fi
-
-if [ "$WIRELESSFIX" == "true" ]; then
-    # TL-WN823N wireless driver
-    apt-get -y install linux-headers-generic build-essential dkms
-    
-    git clone https://github.com/Mange/rtl8192eu-linux-driver.git
-
-    # Build and install a new driver
-    dkms install ./rtl8192eu-linux-driver
-    
-    git clone https://github.com/pvaret/rtl8192cu-fixes.git
-    
-    # Stop the old driver
-    modprobe -r rtl8xxxu
-    
-    # Stop the old driver forever
-    cp ./rtl8192cu-fixes/blacklist-native-rtl8192.conf /etc/modprobe.d/
-fi
-
-# Install java 8
-apt-get -y install oracle-java8-installer
 
 # Docker
 curl -fsSL get.docker.com -o get-docker.sh
@@ -180,28 +113,6 @@ fi
 echo 'export PATH=$PATH:"$HOME/Android/Sdk/platform-tools"' >> $HOME/.profile
 
 if [ "$DESKTOP" == "true" ]; then
-    # Update screenshot preferences
-    su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot '<Primary>Print'"
-    su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot-clip 'Print'"
-    su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot '<Primary><Shift>Print'"
-    su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys area-screenshot-clip '<Shift>Print'"
-    su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot '<Primary><Alt>Print'"
-    su $SUDO_USER -c "gsettings set org.gnome.settings-daemon.plugins.media-keys window-screenshot-clip '<Alt>Print'"
-    
-    su $SUDO_USER -c "gsettings set com.canonical.Unity.Launcher favorites \"$LAUNCHER_PROGRAMS\""
-    
-    #Set the bar to bottom
-    su $SUDO_USER -c "gsettings set com.canonical.Unity.Launcher launcher-position Bottom"
-    
-    # Set as light theme
-    su $SUDO_USER -c "gsettings set org.gnome.desktop.interface gtk-theme 'Radiance'"
-    su $SUDO_USER -c "gsettings set org.gnome.desktop.interface icon-theme 'ubuntu-mono-light'"
-    su $SUDO_USER -c "gsettings set org.gnome.desktop.wm.preferences theme 'Radiance'"
-    
-    su $SUDO_USER -c "gsettings set com.canonical.Unity always-show-menus true"
-    
-    su $SUDO_USER -c "gsettings set org.gnome.desktop.peripherals.mouse speed 1.0"
-    
     # Linux log on boot instead of splash screen
     sed -i 's/.*GRUB_CMDLINE_LINUX_DEFAULT.*/GRUB_CMDLINE_LINUX_DEFAULT=""/' /etc/default/grub
     update-grub
@@ -227,10 +138,8 @@ echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf
 
 # Remove bloat
 ##############
-apt-get -y remove --purge firefox
+snap remove firefox
 apt-get -y remove --purge libreoffice*
-# remove the amazon icon
-echo 'Hidden=true' | cat /usr/share/applications/ubuntu-amazon-default.desktop - > $HOME/.local/share/applications/ubuntu-amazon-default.desktop
 apt-get -y clean
 apt-get -y autoremove
 
