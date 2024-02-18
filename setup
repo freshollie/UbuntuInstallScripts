@@ -54,22 +54,16 @@ cd ~
 # Gather PPAs
 #############
 
-apt-get -y install software-properties-common python-software-properties curl
+apt-get -y install software-properties-common curl
 
 # Chrome
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
 
-# Notepad QQ
-add-apt-repository -y ppa:notepadqq-team/notepadqq
-
 if [ "$DESKTOP" == "false" ]; then
     # Touchpad indicator
     add-apt-repository -y ppa:atareao/atareao 
 fi
-
-# F.lux
-add-apt-repository -y ppa:nathan-renniewaldock/flux
 
 if [ "$WORK" == "false" ]; then
     # Qbittorrent 
@@ -87,13 +81,6 @@ curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microso
 install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
 sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 
-# Don't install spotify or vscode on a laptop
-if [ "$DESKTOP" == "true" ]; then
-    # Spotify
-    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
-    echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
-fi
-
 apt-get update
 
 
@@ -103,8 +90,6 @@ apt-get update
 apt-get -y install apt-transport-https
 
 apt-get -y install google-chrome-stable
-
-apt-get -y install notepadqq
 
 apt-get -y install code
 
@@ -127,17 +112,8 @@ apt-get -y install nano
 
 apt-get -y install g++
 
-if [ "$DESKTOP" == "true" ]; then 
-    # Wallpaper slideshow
-    apt-get -y install variety
-fi
-
-# install nodejs
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
-apt-get install -y nodejs
 
 if [ "$DESKTOP" == "true" ]; then
-    apt-get -y --allow-unauthenticated install spotify-client 
 	apt-get -y install code
 fi
 
@@ -158,9 +134,6 @@ if [ "$WIRELESSFIX" == "true" ]; then
     # Stop the old driver forever
     cp ./rtl8192cu-fixes/blacklist-native-rtl8192.conf /etc/modprobe.d/
 fi
-
-# Install java 8
-apt-get -y install oracle-java8-installer
 
 # Docker
 curl -fsSL get.docker.com -o get-docker.sh
